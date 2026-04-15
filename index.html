@@ -1,342 +1,326 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вайбоград 3.0 - Воркшоп №1 | Дашборд</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0B0E14;
+            color: #E0E6F0;
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 15px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.8em;
+            background: linear-gradient(90deg, #00FFFF, #FF00FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #A0A8B8;
+            font-size: 0.95em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #A0A8B8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00FFFF, #FF00FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-detail {
+            font-size: 0.8em;
+            color: #70788C;
+            margin-top: 8px;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1em;
+            color: #00FFFF;
+            margin-bottom: 15px;
+            font-family: 'Unbounded', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 220px;
+            margin: 15px 0;
+        }
+
+        .chart-container-small {
+            position: relative;
+            height: 180px;
+            margin: 10px 0;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+
+        .product-item:hover {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: #00FFFF;
+            transform: scale(1.05);
+        }
+
+        .feedback-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .feedback-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feedback-list {
+            list-style: none;
+        }
+
+        .feedback-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(0, 255, 255, 0.05);
+            border-left: 3px solid #00FFFF;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .feedback-item.challenge {
+            background: rgba(255, 0, 255, 0.05);
+            border-left-color: #FF00FF;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 2px;
+        }
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="ru"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Вайбоград 3.0 - Воркшоп №1 | Дашборд&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #0B0E14;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #E0E6F0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.5;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 1600px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(0, 255, 255, 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Unbounded', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.8em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(90deg, #00FFFF, #FF00FF);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-background-clip: text;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-text-fill-color: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-clip: text;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.subtitle {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #A0A8B8;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95em;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stats-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(3, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 900px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.stats-grid {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(0, 255, 255, 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 18px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-card:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-3px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: rgba(0, 255, 255, 0.5);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 8px 20px rgba(0, 255, 255, 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-label {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.85em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #A0A8B8;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-value {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2.5em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(90deg, #00FFFF, #FF00FF);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-background-clip: text;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>-webkit-text-fill-color: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-clip: text;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.stat-detail {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.8em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #70788C;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.03);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(0, 255, 255, 0.15);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #00FFFF;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Unbounded', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 1.5px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 220px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 15px 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chart-container-small {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 180px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 10px 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.product-list {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.product-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(0, 255, 255, 0.3);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.product-item:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(0, 255, 255, 0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #00FFFF;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.feedback-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: 1fr 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.feedback-section {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.feedback-list {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>list-style: none;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.feedback-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(0, 255, 255, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 3px solid #00FFFF;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9em;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.feedback-item.challenge {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 0, 255, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left-color: #FF00FF;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.badge {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 5px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(0, 255, 255, 0.2);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.85em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1&gt;Итоги воркшопа №1 по вайбкодингу&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="subtitle"&gt;14 апреля 2026 | Интерактивный дашборд с метриками&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Ключевые метрики и уровень --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stats-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stat-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-label"&gt;Польза&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-value"&gt;4.7&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-detail"&gt;из 5 баллов&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stat-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-label"&gt;Создали прототип&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-value"&gt;100%&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-detail"&gt;Все прошли путь до конца&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stat-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-label"&gt;Кто ты в вайбкодинге?&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="chart-container-small"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;canvas id="levelChart"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Продукты --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="section-title"&gt;Какой продукт будут создавать юные вайбкодеры?&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="product-list" id="productList"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;💡 Интерактивное задание&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;🎮 Игра&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;🎛️ Интерактивный элемент (слайдер)&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;🌐 Сайт-визитка&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;📚 Упражнение в курс&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;🎭 Ролевая игра / анкета предзаписи&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;🤖 Адаптивный тренажер ИИ-навыков&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;💬 Диалоговый тренажер&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="product-item"&gt;🎪 Симулятор&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Обратная связь --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="section-title"&gt;Обратная связь участников&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="feedback-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 style="color: #00FFFF; margin-bottom: 12px; font-size: 1em;"&gt;✨ Что понравилось и забирают с собой&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul class="feedback-list"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item"&gt;Промпты и лайфхаки для работы с ИИ&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item"&gt;Пошаговая инструкция и последовательность шагов&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item"&gt;ИИ-mindset и новые инструменты&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item"&gt;Возможности вайбкодинга и воодушевление&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item"&gt;Содержание воркшопа (будут пересматривать)&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item"&gt;Понятно, что делать в ближайшую неделю&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 style="color: #FF00FF; margin-bottom: 12px; font-size: 1em;"&gt;⚠️ Какие сложности возникли&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul class="feedback-list"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item challenge"&gt;VPN тормозил во время работы&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item challenge"&gt;Технические: zoom + браузер одновременно подвисают&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item challenge"&gt;Регистрация в Claude и подтверждение в GPT&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item challenge"&gt;Проект большой — много деталей для проработки&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item challenge"&gt;Нужно время, чтобы "покрутить" ТЗ&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li class="feedback-item challenge"&gt;Все кажется простым — хочется более сложных вариантов&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// График уровней участников</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const levelCtx = document.getElementById('levelChart').getContext('2d');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>new Chart(levelCtx, {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>type: 'doughnut',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>data: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>labels: ['1 - Новичок', '2', '3 - Уже вайбкожу'],</p>
-<p class="p1"><span class="Apple-converted-space">                </span>datasets: [{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>data: [7, 1, 1],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>'rgba(0, 255, 255, 0.6)',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>'rgba(255, 0, 255, 0.6)',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>'rgba(255, 105, 180, 0.6)'</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>'rgba(0, 255, 255, 1)',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>'rgba(255, 0, 255, 1)',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>'rgba(255, 105, 180, 1)'</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>borderWidth: 2</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}]</p>
-<p class="p1"><span class="Apple-converted-space">            </span>},</p>
-<p class="p1"><span class="Apple-converted-space">            </span>options: {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>responsive: true,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>maintainAspectRatio: false,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>plugins: {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>legend: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>display: false</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>display: false</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tooltip: {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>callbacks: {</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>label: function(context) {</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>const total = context.dataset.data.reduce((a, b) =&gt; a + b, 0);</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>const value = context.parsed;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>const percentage = ((value / total) * 100).toFixed(1);</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>return context.label + ': ' + percentage + '%';</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>backgroundColor: 'rgba(11, 14, 20, 0.9)',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>titleColor: '#00FFFF',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>bodyColor: '#E0E6F0',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>borderColor: '#00FFFF',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>borderWidth: 1,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>padding: 12,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>displayColors: true,</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>boxPadding: 6</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+    <div class="container">
+        <header>
+            <h1>Итоги воркшопа №1 по вайбкодингу</h1>
+            <div class="subtitle">14 апреля 2026 | Интерактивный дашборд с метриками</div>
+        </header>
+
+        <!-- Ключевые метрики и уровень -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Польза</div>
+                <div class="stat-value">4.7</div>
+                <div class="stat-detail">из 5 баллов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Создали прототип</div>
+                <div class="stat-value">100%</div>
+                <div class="stat-detail">Все прошли путь до конца</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Кто ты в вайбкодинге?</div>
+                <div class="chart-container-small">
+                    <canvas id="levelChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Продукты -->
+        <div class="section">
+            <h2 class="section-title">Какой продукт будут создавать юные вайбкодеры?</h2>
+            <div class="product-list" id="productList">
+                <div class="product-item">💡 Интерактивное задание</div>
+                <div class="product-item">🎮 Игра</div>
+                <div class="product-item">🎛️ Интерактивный элемент (слайдер)</div>
+                <div class="product-item">🌐 Сайт-визитка</div>
+                <div class="product-item">📚 Упражнение в курс</div>
+                <div class="product-item">🎭 Ролевая игра / анкета предзаписи</div>
+                <div class="product-item">🤖 Адаптивный тренажер ИИ-навыков</div>
+                <div class="product-item">💬 Диалоговый тренажер</div>
+                <div class="product-item">🎪 Симулятор</div>
+            </div>
+        </div>
+
+        <!-- Обратная связь -->
+        <div class="section">
+            <h2 class="section-title">Обратная связь участников</h2>
+            <div class="feedback-section">
+                <div>
+                    <h3 style="color: #00FFFF; margin-bottom: 12px; font-size: 1em;">✨ Что понравилось и забирают с собой</h3>
+                    <ul class="feedback-list">
+                        <li class="feedback-item">Промпты и лайфхаки для работы с ИИ</li>
+                        <li class="feedback-item">Пошаговая инструкция и последовательность шагов</li>
+                        <li class="feedback-item">ИИ-mindset и новые инструменты</li>
+                        <li class="feedback-item">Возможности вайбкодинга и воодушевление</li>
+                        <li class="feedback-item">Содержание воркшопа (будут пересматривать)</li>
+                        <li class="feedback-item">Понятно, что делать в ближайшую неделю</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: #FF00FF; margin-bottom: 12px; font-size: 1em;">⚠️ Какие сложности возникли</h3>
+                    <ul class="feedback-list">
+                        <li class="feedback-item challenge">VPN тормозил во время работы</li>
+                        <li class="feedback-item challenge">Технические: zoom + браузер одновременно подвисают</li>
+                        <li class="feedback-item challenge">Регистрация в Claude и подтверждение в GPT</li>
+                        <li class="feedback-item challenge">Проект большой — много деталей для проработки</li>
+                        <li class="feedback-item challenge">Нужно время, чтобы "покрутить" ТЗ</li>
+                        <li class="feedback-item challenge">Все кажется простым — хочется более сложных вариантов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // График уровней участников
+        const levelCtx = document.getElementById('levelChart').getContext('2d');
+        new Chart(levelCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['1 - Новичок', '2', '3 - Уже вайбкожу'],
+                datasets: [{
+                    data: [7, 1, 1],
+                    backgroundColor: [
+                        'rgba(0, 255, 255, 0.6)',
+                        'rgba(255, 0, 255, 0.6)',
+                        'rgba(255, 105, 180, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(0, 255, 255, 1)',
+                        'rgba(255, 0, 255, 1)',
+                        'rgba(255, 105, 180, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const value = context.parsed;
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return context.label + ': ' + percentage + '%';
+                            }
+                        },
+                        backgroundColor: 'rgba(11, 14, 20, 0.9)',
+                        titleColor: '#00FFFF',
+                        bodyColor: '#E0E6F0',
+                        borderColor: '#00FFFF',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: true,
+                        boxPadding: 6
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
